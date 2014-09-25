@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * simple01.features.inc
+ * person.features.inc
  */
 
 /**
  * Implements hook_node_info().
  */
-function simple01_node_info() {
+function person_node_info() {
   $items = array(
     'person' => array(
       'name' => t('Person'),

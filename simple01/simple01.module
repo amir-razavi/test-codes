@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the simple01 feature.
- */
-
-include_once 'simple01.features.inc';

@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * simple01.features.field_instance.inc
+ * person.features.field_instance.inc
  */
 
 /**
  * Implements hook_field_default_field_instances().
  */
-function simple01_field_default_field_instances() {
+function person_field_default_field_instances() {
   $field_instances = array();
 
   // Exported field_instance: 'node-person-body'
@@ -22,7 +22,7 @@ function simple01_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 0,
+        'weight' => 2,
       ),
       'teaser' => array(
         'label' => 'hidden',
@@ -55,8 +55,8 @@ function simple01_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-person-field_forename'
-  $field_instances['node-person-field_forename'] = array(
+  // Exported field_instance: 'node-person-field_person_forename'
+  $field_instances['node-person-field_person_forename'] = array(
     'bundle' => 'person',
     'default_value' => NULL,
     'deleted' => 0,
@@ -67,7 +67,7 @@ function simple01_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 1,
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -77,7 +77,7 @@ function simple01_field_default_field_instances() {
       ),
     ),
     'entity_type' => 'node',
-    'field_name' => 'field_forename',
+    'field_name' => 'field_person_forename',
     'label' => 'Forename',
     'required' => 1,
     'settings' => array(
@@ -91,7 +91,7 @@ function simple01_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 1,
+      'weight' => 4,
     ),
   );
 
@@ -111,7 +111,7 @@ function simple01_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 2,
+        'weight' => 1,
       ),
       'teaser' => array(
         'label' => 'above',

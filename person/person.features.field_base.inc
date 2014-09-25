@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * simple01.features.field_base.inc
+ * person.features.field_base.inc
  */
 
 /**
  * Implements hook_field_default_field_bases().
  */
-function simple01_field_default_field_bases() {
+function person_field_default_field_bases() {
   $field_bases = array();
 
   // Exported field_base: 'body'
@@ -39,13 +39,13 @@ function simple01_field_default_field_bases() {
     'type' => 'text_with_summary',
   );
 
-  // Exported field_base: 'field_forename'
-  $field_bases['field_forename'] = array(
+  // Exported field_base: 'field_person_forename'
+  $field_bases['field_person_forename'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
-    'field_name' => 'field_forename',
+    'field_name' => 'field_person_forename',
     'foreign keys' => array(
       'format' => array(
         'columns' => array(
