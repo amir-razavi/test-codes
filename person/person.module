@@ -5,3 +5,10 @@
  */
 
 include_once 'person.features.inc';
+
+/**
+ * Implements hook_init().
+ */
+function person_init() {
+  /* Your code here */
+}
