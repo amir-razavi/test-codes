@@ -1,0 +1,5 @@
+name = Debug Mangler
+description = Simple Debug Test
+core = 7.x
+package = Podium Placements
+dependencies[] = debug_test

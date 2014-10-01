@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the CRM Contacts feature.
- */
-
-include_once 'amir_crm_contacts.features.inc';

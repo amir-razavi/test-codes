@@ -1,0 +1,108 @@
+<?php
+/**
+ * Simple Page Filter
+ * By A R Razavi
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function spy_glass_menu() {
+  /*
+   *$items['blog'] = array(
+   *  'title' => 'blogs',
+   *  'page callback' => 'blog_page',
+   *  'access arguments' => array('access content'),
+   *  'type' => MENU_SUGGESTED_ITEM,
+   *);
+   */
+  $items['node/%node/spy_glass'] = array(
+    'title' => 'Spy Glass',
+    'description' => 'Take a closer look at Page!',
+    'page callback' => 'spy_glass_page',
+    'access callback' => 'node_access',
+    'page arguments' => array(1),
+    'access arguments' => array('view', 1),
+    'type' => MENU_LOCAL_TASK,
+    //'file' => ,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function spy_glass_theme($existing, $type, $theme, $path) {
+  return array(
+    /*
+     *'forum_icon' => array(
+     *  'variables' => array('new_posts' => NULL, 'num_posts' => 0, 'comment_mode' => 0, 'sticky' => 0),
+     *),
+     *'status_report' => array(
+     *  'render element' => 'requirements',
+     *  'file' => 'system.admin.inc',
+     *),
+     */
+    'spy_glass_item' => array(
+      //'render element' => '',
+      //'file' => '',
+      'variables' => array('item' => NULL),
+    ),
+  );
+}
+
+function theme_spy_glass_item($variables){
+  $output = '<p>';
+  $output .= '<strong>' . check_plain($variables['title']) . '</strong><br/>';
+  $output .= check_plain($variables['data']);
+  $output .= '</p>';
+  return $output;
+}
+
+function spy_glass_page($node){
+  $information = _spy_glass_serious_spying_business($node);
+  //dsm($information);
+  $content = array();
+  foreach ($information as $item) {
+    $content[] = array(
+      '#type' => 'markup',
+      '#markup' => theme('spy_glass_item', $item),
+      );
+  }
+  return $content;
+}
+
+/**
+ * Collecting some super secret information about this node.
+ */
+function _spy_glass_serious_spying_business($node) {
+  $information = array();
+  $information[] = array(
+    'title' => t('Title Character Count'),
+    'data' => t('There are @num characters in the $node->title.', array('@num' => strlen($node->title))),
+  );
+  $seconds = $node->changed - $node->created;
+  $information[] = array(
+    'title' => t('Timestamp Differences'),
+    'data' => t('The $node->changed timestamp is @seconds different from the $node->created timestamp.', array('@seconds' => $seconds)),
+  );
+  if ($node->translate == 0) {
+    $information[] = array(
+      'title' => t('Translated?'),
+      'data' => t('This node is NOT translated into pirate speak, hope you know English.'),
+    );
+  }
+  $information[] = array(
+    'title' => t('Hash'),
+    'data' => md5($node->title),
+  );
+  // Example of potential user input data that needs to be sanitized.
+  // Instead of hard-coding this, it could be getting loaded from the db
+  // where a user has entered the info.
+  $information[] = array(
+    'title' => t('Nefarious data'),
+    'data' => '<a href="#" onclick="alert(\'Pwned!\'); return false;">click me</a>',
+  );
+  return $information;
+}
