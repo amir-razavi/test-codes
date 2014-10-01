@@ -1,0 +1,153 @@
+<?php
+
+/**
+ * Test Module for debuging codes
+ * By Amir r Razavi
+ */
+
+/**
+ * Implements hook_init().
+ */
+function debug_test_init() {
+  global $user;
+  // print_r($user);
+  // debug($user);
+  // dsm($user, 'variable test');
+  // kpr($user);
+}
+
+/**
+ * Implements hook_permission().
+ */
+function debug_test_permission() {
+  return array(
+    'administer debug module' =>  array(
+      'title' => t('Administer Debug Module'),
+      'description' => t('Perform administeration tasks for the Debug module'),
+    ),
+  );
+}
+/**
+ * Implements hook_node_view().
+ */
+function debug_test_node_view($node, $view_mode, $langcode) {
+  /*
+   *$node->content['my_additional_field'] = array(
+   *  '#markup' => $additional_field,
+   *  '#weight' => 10,
+   *  '#theme' => 'mymodule_my_additional_field',
+   *);
+   */
+  $node->content['debug_field'] = array(
+    '#type' => 'markup',
+    '#markup' => '<p>' . t('This is a debug field.') . '</p>',
+    '#weight' => -10,
+    );
+  $node->content['debug_list'] = array(
+    '#items' => array('field 1', 'field 2', 'field 3'),
+    '#theme' => 'item_list',
+    '#weight' => -9,
+    );
+  //kpr($node);
+}
+
+/**
+ * Implements hook_menu().
+ */
+function debug_test_menu() {
+  $items['debug'] = array(
+    'title' => 'The debug page for the development site!',
+    'page callback' => 'menu_debug_test_basic',
+    'access callback' => 'user_access',  // default user_access('access content')
+    //'page arguments' => array('access content'),
+    'access arguments' => array('access content'),
+    //'type' => ,
+    //'file' => ,
+  );
+
+  $items['debug/%'] = array(
+    'title' => 'Argument the debug page for the development site!',
+    'page callback' => 'menu_debug_test_extra',
+    'access callback' => 'user_access',  // default user_access('access content')
+    'page arguments' => array(1),
+    'access arguments' => array('access content'),
+    //'type' => ,
+    'file' => 'menu_debug_test_extra.inc',
+  );
+
+  $items['user/%/debug'] = array(
+    'title' => 'Debug',
+    'description' => 'User Debug Tab for the test',
+    'page callback' => 'menu_debug_test_user_tab',
+    'access callback' => 'user_access',  // default user_access('access content')
+    'page arguments' => array(1),
+    'access arguments' => array('administer users'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'menu_debug_test.user.inc',
+  );
+
+  $items['node/%node/debug'] = array(
+    'title' => 'Debug',
+    'description' => 'Node Debug Tab for the test',
+    'page callback' => 'menu_debug_test_node_context',
+    'access callback' => 'user_access',  // default user_access('access content')
+    'page arguments' => array(1),
+    'access arguments' => array('access content'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'menu_debug_test.context.inc',
+    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+  );
+
+  return $items;
+}
+
+/**
+ *  Callback function menu_debug_test_basic
+ */
+
+function menu_debug_test_basic(){
+  $content = array();
+
+  $content['raw_markup'] = array(
+    '#type' => 'markup',
+    '#markup' => 'This is just a test at the moment!',
+    '#prefix' => '<p>',
+    '#suffix' => '</p>',
+    );
+
+  $variables = array(
+    'path' => '/sites/default/files/logo.png',
+    'alt' => t('This is an example image'),
+    'title' => t('This its title'),
+    );
+  $content['themed_data'] = array(
+    '#type' => 'markup',
+    '#markup' => theme('image', $variables),
+    '#prefix' => '<div class="debug-test">',
+    '#suffix' => '</div>',
+    '#attached' => array(
+      'css' => array(
+        drupal_get_path('module', 'debug_test') . '/menu_debug.css',
+        ),
+      ),
+    );
+
+  $content['renderable_element'] = array(
+    '#theme' => 'item_list',
+    '#title' => t('A sample title!'),
+    '#items' => array(
+      t('First item!'),
+      t('Second Item'),
+      t('Third item'),
+      t('The current time is %time.', array('%time' => date('r'))),
+      ),
+    '#cache' => array(
+      'keys' => array('menu_debug', 'renderable_element'), // menu_debug:renderable_element
+      'bin' => 'cache',
+      'expire' => time() + 30,
+      'granularity' => DRUPAL_CACHE_PER_PAGE,
+      ),
+    );
+
+  return $content;
+}
